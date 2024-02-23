@@ -194,5 +194,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
         savedCardIDs.forEach(cID -> savedCards.add(CardLibrary.getCopy(cID)));
         savedRelicIDs.forEach(rID -> savedRelics.add(RelicLibrary.getRelic(rID).makeCopy()));
         savedPotionIDs.forEach(pID -> savedPotions.add(PotionHelper.getPotion(pID)));
+
+        PLAYER_EMC = emcData.PLAYER_EMC;
     }
 }
