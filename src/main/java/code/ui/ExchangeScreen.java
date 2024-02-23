@@ -79,17 +79,17 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
             cardPanel = new AbstractScreenPanel<AbstractCard>(
                 ()->TransmutationTable.getList(AbstractDungeon.player.masterDeck.group),
                 ()->TransmutationTable.getList(TransmutationTable.savedCards),
-                    AbstractCard.RAW_W * Settings.scale, AbstractCard.RAW_H * Settings.scale);
+                    AbstractCard.RAW_W * Settings.scale, AbstractCard.RAW_H * Settings.scale, -50f);
         if(relicPanel == null)
             relicPanel = new AbstractScreenPanel<AbstractRelic>(
                 ()->TransmutationTable.getList(AbstractDungeon.player.relics),
                 ()->TransmutationTable.getList(TransmutationTable.savedRelics),
-                    AbstractRelic.RAW_W * Settings.scale, AbstractRelic.RAW_W * Settings.scale);
+                    AbstractRelic.RAW_W * Settings.scale, AbstractRelic.RAW_W * Settings.scale, -50f);
         if(potionPanel == null)
             potionPanel = new AbstractScreenPanel<AbstractPotion>(
                 ()->TransmutationTable.getList((ArrayList<AbstractPotion>) AbstractDungeon.player.potions.stream().filter(p -> !p.ID.equals(PotionSlot.POTION_ID)).collect(Collectors.toCollection(ArrayList::new))),
                 ()->TransmutationTable.getList(TransmutationTable.savedPotions),
-                    64f * Settings.scale, 64f * Settings.scale);
+                    64f * Settings.scale, 64f * Settings.scale, 25f);
 
         currentPanel = cardPanel;
 

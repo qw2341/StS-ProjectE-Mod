@@ -37,6 +37,7 @@ public class ListItem<T> {
             this.height = i.hb.height;
             this.hb = i.hb;
             this.emc = TransmutationTable.getCardEMC(i);
+            this.item = (T) i;
         } else if (item instanceof AbstractRelic) {
             AbstractRelic i = ((AbstractRelic) item).makeCopy();
             this.id = i.relicId;
@@ -46,6 +47,8 @@ public class ListItem<T> {
             this.height = i.hb.height;
             this.hb = i.hb;
             this.emc = TransmutationTable.getRelicEMC(i);
+            i.isSeen = true;
+            this.item = (T) i;
         } else if (item instanceof AbstractPotion) {
             AbstractPotion i = ((AbstractPotion) item);
             this.id = i.ID;
@@ -55,9 +58,10 @@ public class ListItem<T> {
             this.height = i.hb.height;
             this.hb = i.hb;
             this.emc = TransmutationTable.getPotionEMC(i);
+            this.item = (T) i;
         }
 
-        this.item = item;
+
     }
 
     public void render(SpriteBatch sb) {
@@ -82,6 +86,7 @@ public class ListItem<T> {
             ((AbstractCard) item).updateHoverLogic();
             ((AbstractCard) item).update();
         } else if (item instanceof AbstractRelic) {
+            ((AbstractRelic) item).hb.update();
             ((AbstractRelic) item).update();
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).update();
@@ -96,6 +101,9 @@ public class ListItem<T> {
         } else if (item instanceof AbstractRelic) {
             ((AbstractRelic) item).targetX = x;
             ((AbstractRelic) item).targetY = y;
+            ((AbstractRelic) item).currentX = x;
+            ((AbstractRelic) item).currentY = y;
+            ((AbstractRelic) item).hb.move(x,y);
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).move(x,y);
             ((AbstractPotion) item).hb.move(x,y);

@@ -59,7 +59,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
     private float itemWidth;
     private float itemHeight;
 
-    public AbstractScreenPanel(ItemGetter<T> getPlayerItems, ItemGetter<T> getTransmutableItems, float itemWidth, float itemHeight) {
+    public AbstractScreenPanel(ItemGetter<T> getPlayerItems, ItemGetter<T> getTransmutableItems, float itemWidth, float itemHeight, float spacing) {
         this.scrollBar = new ScrollBar(this);
         this.searchBox = new TextSearchBox(this, 0f, Settings.HEIGHT / 4f, false);
 
@@ -71,8 +71,8 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
 
         this.itemWidth = itemWidth;
         this.itemHeight = itemHeight;
-        this.spaceX = itemWidth + 25f;
-        this.spaceY = itemHeight + 25f;
+        this.spaceX = itemWidth + spacing;
+        this.spaceY = itemHeight + spacing;
         this.itemsPerLine = Math.round(SEGMENT_WIDTH / (getItemWidth() + this.spaceX));
     }
     protected void callOnOpen() {
