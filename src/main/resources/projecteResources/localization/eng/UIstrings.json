@@ -1,3 +1,14 @@
 {
-    
+  "projecte:TextSearchBox": {
+    "TEXT": [
+      "Search",
+      "Click to start searching..."
+    ]
+  },
+  "projecte:TransmutationTable": {
+    "TEXT": [
+      "Transmutation Table",
+      "Converts cards, relics, and potions into EMC and vice versa."
+    ]
+  }
 }

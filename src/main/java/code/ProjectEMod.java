@@ -4,22 +4,38 @@ import basemod.AutoAdd;
 import basemod.BaseMod;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
+import code.ui.TransmutationTable;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import code.relics.AbstractEasyRelic;
 import code.util.ProAudio;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 @SpireInitializer
 public class ProjectEMod implements
         EditRelicsSubscriber,
         EditStringsSubscriber,
-        AddAudioSubscriber {
+        AddAudioSubscriber, PostInitializeSubscriber, PostRenderSubscriber, PostUpdateSubscriber {
+
+    public static Logger logger = LogManager.getLogger(ProjectEMod.class.getName());
+    public static HashSet<Integer> relicsToRemove = new HashSet<>();
+    public static LinkedList<AbstractRelic> relicsToAdd = new LinkedList<>();
 
     public static final String modID = "projecte";
 
@@ -106,4 +122,46 @@ public class ProjectEMod implements
             BaseMod.addAudio(makeID(a.name()), makePath("audio/" + a.name().toLowerCase() + ".ogg"));
     }
 
+    @Override
+    public void receivePostInitialize() {
+        TransmutationTable tt = new TransmutationTable();
+        BaseMod.addTopPanelItem(tt);
+        BaseMod.addSaveField(makeID("emcsave"), tt);
+    }
+
+    @Override
+    public void receivePostRender(SpriteBatch sb) {
+        if(AbstractDungeon.isPlayerInDungeon())
+            TransmutationTable.renderScreen(sb);
+    }
+
+    @Override
+    public void receivePostUpdate() {
+        if(AbstractDungeon.isPlayerInDungeon())
+            TransmutationTable.updateScreen();
+    }
+
+    public static void modifyPlayerRelics() {
+        if(relicsToRemove.size()>0) {
+
+            ArrayList<AbstractRelic> playerRelics = AbstractDungeon.player.relics;
+            relicsToRemove.forEach(i->playerRelics.get(i).onUnequip());
+            AbstractDungeon.player.relics = IntStream.range(0, playerRelics.size())
+                    .filter(i -> !relicsToRemove.contains(i))
+                    .mapToObj(playerRelics::get)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            AbstractDungeon.player.reorganizeRelics();
+
+            AbstractRelic.relicPage = 0;
+            AbstractDungeon.topPanel.adjustRelicHbs();
+
+            relicsToRemove.clear();
+        }
+        if(relicsToAdd.size()>0){
+            for (AbstractRelic r : relicsToAdd) {
+                AbstractDungeon.getCurrRoom().spawnRelicAndObtain((float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F, r);
+            }
+            relicsToAdd.clear();
+        }
+    }
 }
