@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
@@ -198,6 +199,8 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
         this.arrowScale1 = 0.8F + (MathUtils.cos(this.arrowTimer) + 1.0F) / 8.0F;
         this.arrowScale2 = 0.8F + (MathUtils.cos(this.arrowTimer - 0.8F) + 1.0F) / 8.0F;
         this.arrowScale3 = 0.8F + (MathUtils.cos(this.arrowTimer - 1.6F) + 1.0F) / 8.0F;
+
+        FontHelper.renderFontCentered(sb, FontHelper.cardEnergyFont_L, "EMC: " + TransmutationTable.PLAYER_EMC, x - 64*Settings.scale, Settings.HEIGHT / 2.0F - 64f);
     }
 
     private void renderList(SpriteBatch sb, ArrayList<ListItem<T>> items, float startX) {
