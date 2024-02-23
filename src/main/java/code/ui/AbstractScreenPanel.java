@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBar;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBarListener;
@@ -87,15 +88,19 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
     }
 
     public void updateItemClickLogic() {
-        if(clickStartedItem == hoveredItem) {
-            if(this.playerItems.contains(hoveredItem)) {
-                //remove from player
-                hoveredItem.toEMC();
-            } else if (this.transmutableItems.contains(hoveredItem)) {
-                //add to player
-                hoveredItem.toPlayer();
+        if(hoveredItem != null && clickStartedItem == hoveredItem) {
+            if(InputHelper.justReleasedClickLeft) {
+                if(this.playerItems.contains(hoveredItem)) {
+                    //remove from player
+                    hoveredItem.toEMC();
+                } else if (this.transmutableItems.contains(hoveredItem)) {
+                    //add to player
+                    hoveredItem.toPlayer();
+                }
+                onChangeEMC();
+                clickStartedItem = null;
             }
-            onChangeEMC();
+
         }
     }
 
@@ -156,7 +161,8 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
             if(item.hb.hovered && InputHelper.justClickedLeft) {
                 item.hb.clicked = true;
                 clickStartedItem = item;
-                ProjectEMod.logger.info("Clicked " + clickStartedItem.id);
+                //ProjectEMod.logger.info("Clicked " + clickStartedItem.id);
+                InputHelper.justClickedLeft = false;
             }
         }
     }
@@ -219,11 +225,20 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
     public void open() {
         callOnOpen();
 
+        targetY = START_Y;
+
         calculateScrollBounds();
     }
 
     public void close() {
-        AbstractDungeon.player.adjustPotionPositions();
+        adjustPotionPositions();
+    }
+
+    private void adjustPotionPositions() {
+        for(int i = 0; i < AbstractDungeon.player.potions.size(); ++i) {
+            ((AbstractPotion)AbstractDungeon.player.potions.get(i)).adjustPosition(i);
+        }
+
     }
 
     protected void updateScrolling()

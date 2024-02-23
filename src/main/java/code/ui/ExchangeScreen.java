@@ -87,7 +87,7 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
             relicPanel = new AbstractScreenPanel<AbstractRelic>(
                 ()->TransmutationTable.getList(AbstractDungeon.player.relics),
                 ()->TransmutationTable.getList(TransmutationTable.savedRelics),
-                    AbstractRelic.RAW_W * Settings.scale, AbstractRelic.RAW_W * Settings.scale, -50f);
+                    AbstractRelic.RAW_W * Settings.scale, AbstractRelic.RAW_W * Settings.scale, 0f);
         if(potionPanel == null)
             potionPanel = new AbstractScreenPanel<AbstractPotion>(
                 ()->TransmutationTable.getList((ArrayList<AbstractPotion>) AbstractDungeon.player.potions.stream().filter(p -> !p.ID.equals(PotionSlot.POTION_ID)).collect(Collectors.toCollection(ArrayList::new))),
@@ -162,7 +162,7 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         if (confirmButton.hb.clicked) {
             CInputActionSet.select.unpress();
             confirmButton.hb.clicked = false;
-            show = false;
+            close();
         }
         for (HeaderButtonPlus b : this.buttons) b.update();
         if (this.confirmButton.hb.hovered) return;

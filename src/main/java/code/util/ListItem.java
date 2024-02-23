@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
+import com.megacrit.cardcrawl.potions.PotionSlot;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 
 public class ListItem<T> {
@@ -74,11 +75,12 @@ public class ListItem<T> {
                 ((AbstractCard) item).renderInLibrary(sb);
             }
         } else if (item instanceof AbstractRelic) {
+            this.hb.render(sb);
             ((AbstractRelic) item).render(sb, false, Color.BLACK);
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).labRender(sb);
         }
-        FontHelper.renderFontCentered(sb,FontHelper.charDescFont,"EMC " + this.emc, this.hb.cX, this.hb.cY - this.height / 2f, Settings.CREAM_COLOR);
+        FontHelper.renderFontCentered(sb,FontHelper.cardEnergyFont_L,"EMC " + this.emc, this.hb.cX, this.hb.cY - this.height / 2f, Settings.CREAM_COLOR);
     }
 
     public void update() {
@@ -86,8 +88,10 @@ public class ListItem<T> {
             ((AbstractCard) item).updateHoverLogic();
             ((AbstractCard) item).update();
         } else if (item instanceof AbstractRelic) {
+            this.hb.update();
             ((AbstractRelic) item).hb.update();
             ((AbstractRelic) item).update();
+//            ((AbstractRelic) item).hb.hovered = this.hb.hovered;
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).update();
             this.hb.update();
@@ -104,6 +108,7 @@ public class ListItem<T> {
             ((AbstractRelic) item).currentX = x;
             ((AbstractRelic) item).currentY = y;
             ((AbstractRelic) item).hb.move(x,y);
+            this.hb.move(x,y);
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).move(x,y);
             ((AbstractPotion) item).hb.move(x,y);
@@ -149,6 +154,9 @@ public class ListItem<T> {
             } else if (item instanceof AbstractRelic) {
                 ProjectEMod.relicsToAdd.add(((AbstractRelic) item).makeCopy());
             } else if (item instanceof AbstractPotion) {
+                if(AbstractDungeon.player.potionSlots <= AbstractDungeon.player.potions.stream()
+                        .filter(potion -> !(potion instanceof PotionSlot))
+                        .count()) return this;
                 AbstractDungeon.player.obtainPotion(((AbstractPotion) item).makeCopy());
             }
             //deduct emc
