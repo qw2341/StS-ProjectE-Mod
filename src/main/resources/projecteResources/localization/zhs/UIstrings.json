@@ -1,0 +1,14 @@
+{
+  "projecte:TextSearchBox": {
+    "TEXT": [
+      "搜索",
+      "点击开始搜索..."
+    ]
+  },
+  "projecte:TransmutationTable": {
+    "TEXT": [
+      "转换桌",
+      "将卡牌，遗物，以及药水转变为EMC，反之亦然。"
+    ]
+  }
+}
