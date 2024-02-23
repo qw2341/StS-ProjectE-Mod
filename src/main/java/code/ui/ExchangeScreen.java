@@ -131,7 +131,7 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
 
         show = false;
 
-        if(Loader.isModLoaded("loadout")) AbstractSelectScreen.showLoadoutRelics();
+//        if(Loader.isModLoaded("loadout")) AbstractSelectScreen.showLoadoutRelics();
     }
 
     public void render(SpriteBatch sb) {
