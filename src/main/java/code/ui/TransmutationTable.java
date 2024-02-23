@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 
 public class TransmutationTable extends TopPanelItem implements CustomSavable<EMCData> {
 
-    private static final Texture IMG = new Texture(ProjectEMod.makeImagePath("ui/missing.png"));
+    private static final Texture IMG = new Texture(ProjectEMod.makeImagePath("ui/TransmutationTable.png"));
     public static final String ID = ProjectEMod.makeID("transmutationtable");
 
     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(ProjectEMod.makeID("TransmutationTable"));
     public static final String[] TEXT = uiStrings.TEXT;
 
-    private ArrayList<PowerTip> tips;
+    private final ArrayList<PowerTip> tips;
     private static final ExchangeScreen exchangeScreen = new ExchangeScreen();
 
     public static final ArrayList<AbstractCard> savedCards;
