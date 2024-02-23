@@ -31,7 +31,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     public static final String[] TEXT = uiStrings.TEXT;
 
     private final ArrayList<PowerTip> tips;
-    private static final ExchangeScreen exchangeScreen = new ExchangeScreen();
+    public static final ExchangeScreen exchangeScreen = new ExchangeScreen();
 
     public static final ArrayList<AbstractCard> savedCards;
     public static final HashSet<String> savedCardIDs;
@@ -41,6 +41,8 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     public static final HashSet<String> savedPotionIDs;
 
     public static int PLAYER_EMC = 0;
+
+    public static TransmutationTable INSTANCE;
 
     static {
         savedCards = new ArrayList<>();
@@ -55,6 +57,8 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
         super(IMG, ID);
         tips = new ArrayList<>();
         tips.add(new PowerTip(TEXT[0], TEXT[1]));
+
+        INSTANCE = this;
     }
 
     @Override

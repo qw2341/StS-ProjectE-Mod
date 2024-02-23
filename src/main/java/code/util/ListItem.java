@@ -89,9 +89,7 @@ public class ListItem<T> {
             ((AbstractCard) item).update();
         } else if (item instanceof AbstractRelic) {
             this.hb.update();
-            ((AbstractRelic) item).hb.update();
             ((AbstractRelic) item).update();
-//            ((AbstractRelic) item).hb.hovered = this.hb.hovered;
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).update();
             this.hb.update();
@@ -128,7 +126,7 @@ public class ListItem<T> {
             }
 
         } else if (item instanceof AbstractRelic) {
-            ProjectEMod.relicsToRemove.add(AbstractDungeon.player.relics.indexOf(item));
+//            ProjectEMod.relicsToRemove.add(TransmutationTable..indexOf(item));
             if(!TransmutationTable.savedRelicIDs.contains(((AbstractRelic) item).relicId)) {
                 TransmutationTable.savedRelicIDs.add(((AbstractRelic) item).relicId);
                 TransmutationTable.savedRelics.add(((AbstractRelic) item).makeCopy());

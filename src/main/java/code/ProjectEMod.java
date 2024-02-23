@@ -156,12 +156,14 @@ public class ProjectEMod implements
             AbstractDungeon.topPanel.adjustRelicHbs();
 
             relicsToRemove.clear();
+            TransmutationTable.exchangeScreen.currentPanel.onChangeEMC();
         }
         if(relicsToAdd.size()>0){
             for (AbstractRelic r : relicsToAdd) {
                 AbstractDungeon.getCurrRoom().spawnRelicAndObtain((float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F, r);
             }
             relicsToAdd.clear();
+            TransmutationTable.exchangeScreen.currentPanel.onChangeEMC();
         }
     }
 }

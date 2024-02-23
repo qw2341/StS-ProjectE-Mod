@@ -33,7 +33,7 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
     public static final String[] gTEXT = gUiStrings.TEXT;
     protected GridSelectConfirmButton confirmButton = new GridSelectConfirmButton(gTEXT[0]);
 
-    private AbstractScreenPanel currentPanel;
+    public AbstractScreenPanel<?> currentPanel;
 
     public ArrayList<ListItem<AbstractCard>> trasmutableCards;
     public ArrayList<ListItem<AbstractCard>> trasmutableRelics;

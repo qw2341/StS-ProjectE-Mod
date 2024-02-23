@@ -92,6 +92,9 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
             if(InputHelper.justReleasedClickLeft) {
                 if(this.playerItems.contains(hoveredItem)) {
                     //remove from player
+                    if(hoveredItem.item instanceof AbstractRelic) {
+                        ProjectEMod.relicsToRemove.add(this.playerItems.indexOf(hoveredItem));
+                    }
                     hoveredItem.toEMC();
                 } else if (this.transmutableItems.contains(hoveredItem)) {
                     //add to player
