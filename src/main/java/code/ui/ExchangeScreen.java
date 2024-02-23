@@ -4,6 +4,7 @@ package code.ui;
 import basemod.ReflectionHacks;
 import code.util.ListItem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.evacipated.cardcrawl.modthespire.Loader;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -19,6 +20,8 @@ import com.megacrit.cardcrawl.potions.PotionSlot;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.relics.TinyChest;
 import com.megacrit.cardcrawl.ui.buttons.GridSelectConfirmButton;
+import loadout.LoadoutMod;
+import loadout.screens.AbstractSelectScreen;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -99,11 +102,14 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
             AbstractDungeon.overlayMenu.cancelButton.hide();
             AbstractDungeon.overlayMenu.proceedButton.hide();
             //AbstractDungeon.closeCurrentScreen();
+            if(Loader.isModLoaded("loadout")) LoadoutMod.isScreenUp = false;
             AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NO_INTERACT;
         }
 
         AbstractDungeon.isScreenUp = true;
         AbstractDungeon.overlayMenu.showBlackScreen(0.5f);
+
+        if(Loader.isModLoaded("loadout")) AbstractSelectScreen.hideLoadoutRelics();
 
         show = true;
 
@@ -124,6 +130,8 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         AbstractDungeon.closeCurrentScreen();
 
         show = false;
+
+        if(Loader.isModLoaded("loadout")) AbstractSelectScreen.showLoadoutRelics();
     }
 
     public void render(SpriteBatch sb) {

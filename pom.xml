@@ -54,6 +54,15 @@
             <scope>system</scope>
             <systemPath>${Steam.path}/workshop/content/646570/1609158507/StSLib.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>loadoutmod</groupId>
+            <artifactId>loadout</artifactId>
+            <version>0.9.8</version>
+            <scope>system</scope>
+            <systemPath>${Steam.path}/workshop/content/646570/2814267979/loadout.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
 
