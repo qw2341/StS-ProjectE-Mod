@@ -179,6 +179,8 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
         savedCardIDs.clear();
         savedRelicIDs.clear();
         savedPotionIDs.clear();
+
+        PLAYER_EMC = 0;
     }
 
     @Override

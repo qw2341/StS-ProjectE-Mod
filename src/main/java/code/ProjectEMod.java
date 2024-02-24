@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 public class ProjectEMod implements
         EditRelicsSubscriber,
         EditStringsSubscriber,
-        AddAudioSubscriber, PostInitializeSubscriber, PostRenderSubscriber, PostUpdateSubscriber {
+        AddAudioSubscriber, PostInitializeSubscriber, PostRenderSubscriber, PostUpdateSubscriber, PostDungeonInitializeSubscriber {
 
     public static Logger logger = LogManager.getLogger(ProjectEMod.class.getName());
     public static HashSet<Integer> relicsToRemove = new HashSet<>();
@@ -180,5 +180,10 @@ public class ProjectEMod implements
             relicsToAdd.clear();
             TransmutationTable.exchangeScreen.currentPanel.onChangeEMC();
         }
+    }
+
+    @Override
+    public void receivePostDungeonInitialize() {
+        TransmutationTable.resetLists();
     }
 }
