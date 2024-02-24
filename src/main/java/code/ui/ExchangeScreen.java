@@ -2,6 +2,7 @@ package code.ui;
 
 
 import basemod.ReflectionHacks;
+import code.ProjectEMod;
 import code.util.ListItem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.Loader;
@@ -103,11 +104,13 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
             AbstractDungeon.overlayMenu.proceedButton.hide();
             //AbstractDungeon.closeCurrentScreen();
             if(Loader.isModLoaded("loadout")) LoadoutMod.isScreenUp = false;
+            ProjectEMod.isScreenUp = false;
             AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NO_INTERACT;
         }
 
         AbstractDungeon.isScreenUp = true;
         AbstractDungeon.overlayMenu.showBlackScreen(0.5f);
+        //ProjectEMod.isScreenUp = true;
 
         if(Loader.isModLoaded("loadout")) AbstractSelectScreen.hideLoadoutRelics();
 
@@ -130,8 +133,9 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         AbstractDungeon.closeCurrentScreen();
 
         show = false;
+        ProjectEMod.isScreenUp = false;
 
-//        if(Loader.isModLoaded("loadout")) AbstractSelectScreen.showLoadoutRelics();
+        if(Loader.isModLoaded("loadout")) LoadoutMod.isScreenUp = false;
     }
 
     public void render(SpriteBatch sb) {
@@ -143,8 +147,17 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         confirmButton.render(sb);
     }
 
+    public void hide() {
+        confirmButton.isDisabled = true;
+        confirmButton.hide();
+        show = false;
+    }
+
     public void update() {
+        if(ProjectEMod.isScreenUp) hide();
         if(!show) return;
+
+
 
         if (InputHelper.pressedEscape) {
             close();
@@ -168,7 +181,7 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         if (this.confirmButton.hb.hovered) return;
         currentPanel.update();
 
-        if(!show) close();
+        //if(!show) close();
     }
 
 

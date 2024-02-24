@@ -37,6 +37,8 @@ public class ProjectEMod implements
     public static HashSet<Integer> relicsToRemove = new HashSet<>();
     public static LinkedList<AbstractRelic> relicsToAdd = new LinkedList<>();
 
+    public static boolean isScreenUp = false;
+
     public static final String modID = "projecte";
 
     public static String makeID(String idText) {
