@@ -183,7 +183,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
 
 
         renderList(sb, playerItems, START_X);
-        renderList(sb, transmutableItems, START_X + SEGMENT_WIDTH);
+        renderList(sb, transmutableItems, Settings.WIDTH / 2f + 175.0f * Settings.scale);
 
         renderArrows(sb);
 
@@ -205,7 +205,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
         this.arrowScale1 = 0.8F + (MathUtils.cos(this.arrowTimer) + 1.0F) / 8.0F;
         this.arrowScale2 = 0.8F + (MathUtils.cos(this.arrowTimer - 0.8F) + 1.0F) / 8.0F;
         this.arrowScale3 = 0.8F + (MathUtils.cos(this.arrowTimer - 1.6F) + 1.0F) / 8.0F;
-
+        FontHelper.cardEnergyFont_L.getData().setScale(1.0f);
         FontHelper.renderFontCentered(sb, FontHelper.cardEnergyFont_L, "EMC: " + TransmutationTable.PLAYER_EMC, x - 64*Settings.scale, Settings.HEIGHT / 2.0F - 64f);
     }
 

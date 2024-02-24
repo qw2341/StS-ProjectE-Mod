@@ -82,6 +82,7 @@ public class ListItem<T> {
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).labRender(sb);
         }
+        FontHelper.cardEnergyFont_L.getData().setScale(0.5f);
         FontHelper.renderFontCentered(sb,FontHelper.cardEnergyFont_L,"EMC " + getEmc(), this.hb.cX, this.hb.cY - this.height / 2f, Settings.CREAM_COLOR);
     }
 
