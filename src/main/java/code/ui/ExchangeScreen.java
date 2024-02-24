@@ -81,18 +81,18 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
 
         if(cardPanel == null)
             cardPanel = new AbstractScreenPanel<AbstractCard>(
-                ()->TransmutationTable.getList(AbstractDungeon.player.masterDeck.group),
-                ()->TransmutationTable.getList(TransmutationTable.savedCards),
+                ()->TransmutationTable.getList(AbstractDungeon.player.masterDeck.group, true),
+                ()->TransmutationTable.getList(TransmutationTable.savedCards, false),
                     AbstractCard.RAW_W * Settings.scale, AbstractCard.RAW_H * Settings.scale, -50f);
         if(relicPanel == null)
             relicPanel = new AbstractScreenPanel<AbstractRelic>(
-                ()->TransmutationTable.getList(AbstractDungeon.player.relics),
-                ()->TransmutationTable.getList(TransmutationTable.savedRelics),
+                ()->TransmutationTable.getList(AbstractDungeon.player.relics, true),
+                ()->TransmutationTable.getList(TransmutationTable.savedRelics, false),
                     AbstractRelic.RAW_W * Settings.scale, AbstractRelic.RAW_W * Settings.scale, 0f);
         if(potionPanel == null)
             potionPanel = new AbstractScreenPanel<AbstractPotion>(
-                ()->TransmutationTable.getList((ArrayList<AbstractPotion>) AbstractDungeon.player.potions.stream().filter(p -> !p.ID.equals(PotionSlot.POTION_ID)).collect(Collectors.toCollection(ArrayList::new))),
-                ()->TransmutationTable.getList(TransmutationTable.savedPotions),
+                ()->TransmutationTable.getList((ArrayList<AbstractPotion>) AbstractDungeon.player.potions.stream().filter(p -> !p.ID.equals(PotionSlot.POTION_ID)).collect(Collectors.toCollection(ArrayList::new)), true),
+                ()->TransmutationTable.getList(TransmutationTable.savedPotions, false),
                     64f * Settings.scale, 64f * Settings.scale, 25f);
 
         currentPanel = cardPanel;

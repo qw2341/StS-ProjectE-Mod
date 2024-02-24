@@ -28,6 +28,8 @@ public class ListItem<T> {
 
     public int emc;
 
+    public boolean isOwnedByPlayer = false;
+
     public ListItem(T item) {
         if (item instanceof AbstractCard) {
             AbstractCard i = ((AbstractCard) item);
@@ -80,7 +82,7 @@ public class ListItem<T> {
         } else if (item instanceof AbstractPotion) {
             ((AbstractPotion) item).labRender(sb);
         }
-        FontHelper.renderFontCentered(sb,FontHelper.cardEnergyFont_L,"EMC " + this.emc, this.hb.cX, this.hb.cY - this.height / 2f, Settings.CREAM_COLOR);
+        FontHelper.renderFontCentered(sb,FontHelper.cardEnergyFont_L,"EMC " + getEmc(), this.hb.cX, this.hb.cY - this.height / 2f, Settings.CREAM_COLOR);
     }
 
     public void update() {
@@ -113,6 +115,24 @@ public class ListItem<T> {
         }
     }
 
+    public int getEmc() {
+        if (isOwnedByPlayer) {
+            if (item instanceof AbstractCard) {
+                return this.emc;
+            } else if (item instanceof AbstractRelic) {
+                return this.emc *
+                        (((AbstractRelic) item).usedUp ||
+                                ExceptionRelicList.singleUseList.contains(((AbstractRelic) item).relicId) ||
+                                ExceptionRelicList.noValueList.contains(((AbstractRelic) item).relicId)
+                                ? 0 : 1);
+            } else if (item instanceof AbstractPotion) {
+                return this.emc;
+            }
+        }
+
+        return this.emc;
+    }
+
     public ListItem<T> toEMC() {
         //remember
 
@@ -140,7 +160,7 @@ public class ListItem<T> {
         }
 
         //add emc
-        TransmutationTable.PLAYER_EMC += this.emc;
+        TransmutationTable.PLAYER_EMC += getEmc();
         return this;
     }
 

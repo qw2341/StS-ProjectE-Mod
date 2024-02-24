@@ -162,8 +162,10 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
         }
     }
 
-    public static <T> ArrayList<ListItem<T>> getList(ArrayList<T> items) {
-        return items.stream().map(ListItem::new).collect(Collectors.toCollection(ArrayList::new));
+    public static <T> ArrayList<ListItem<T>> getList(ArrayList<T> items, final boolean ownedByPlayer) {
+        ArrayList<ListItem<T>> ret = items.stream().map(ListItem::new).collect(Collectors.toCollection(ArrayList::new));
+        ret.forEach(l -> l.isOwnedByPlayer = ownedByPlayer);
+        return ret;
     }
 
     public static <T> ArrayList<ListItem<T>> getList(HashSet<T> items) {

@@ -13,7 +13,7 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
-import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.relics.*;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import code.relics.AbstractEasyRelic;
 import code.util.ProAudio;
@@ -36,6 +36,19 @@ public class ProjectEMod implements
     public static Logger logger = LogManager.getLogger(ProjectEMod.class.getName());
     public static HashSet<Integer> relicsToRemove = new HashSet<>();
     public static LinkedList<AbstractRelic> relicsToAdd = new LinkedList<>();
+
+    public static HashSet<String> screenRelics = new HashSet<>();
+
+    static {
+        screenRelics.add(BottledFlame.ID);
+        screenRelics.add(BottledLightning.ID);
+        screenRelics.add(BottledTornado.ID);
+        screenRelics.add(TinyHouse.ID);
+        screenRelics.add(EmptyCage.ID);
+        screenRelics.add(Orrery.ID);
+        screenRelics.add(Cauldron.ID);
+        screenRelics.add(DollysMirror.ID);
+    }
 
     public static boolean isScreenUp = false;
 

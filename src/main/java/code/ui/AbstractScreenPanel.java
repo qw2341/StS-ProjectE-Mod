@@ -98,6 +98,12 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
                     }
                     hoveredItem.toEMC();
                 } else if (this.transmutableItems.contains(hoveredItem)) {
+
+                    if(hoveredItem.item instanceof AbstractRelic) {
+                        if(ProjectEMod.screenRelics.contains(hoveredItem.id))
+                            TransmutationTable.exchangeScreen.close();
+                    }
+
                     //add to player
                     hoveredItem.toPlayer();
                 }
