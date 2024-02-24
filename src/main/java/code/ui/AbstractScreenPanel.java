@@ -192,7 +192,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
     }
 
     private void renderArrows(SpriteBatch sb) {
-        float x = Settings.WIDTH / 2.0F - 73.0F * Settings.scale - 32.0F;
+        float x = Settings.WIDTH / 2.0F - 123.0F * Settings.scale - 32.0F;
         sb.setColor(Color.WHITE);
         sb.draw(ImageMaster.UPGRADE_ARROW, x, Settings.HEIGHT / 2.0F - 32.0F, 32.0F, 32.0F, 64.0F, 64.0F, this.arrowScale1 * Settings.scale, this.arrowScale1 * Settings.scale, 0.0F, 0, 0, 64, 64, false, false);
         x += 64.0F * Settings.scale;
@@ -206,7 +206,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
         this.arrowScale2 = 0.8F + (MathUtils.cos(this.arrowTimer - 0.8F) + 1.0F) / 8.0F;
         this.arrowScale3 = 0.8F + (MathUtils.cos(this.arrowTimer - 1.6F) + 1.0F) / 8.0F;
         FontHelper.cardEnergyFont_L.getData().setScale(1.0f);
-        FontHelper.renderFontCentered(sb, FontHelper.cardEnergyFont_L, "EMC: " + TransmutationTable.PLAYER_EMC, x - 64*Settings.scale, Settings.HEIGHT / 2.0F - 64f);
+        FontHelper.renderFontCentered(sb, FontHelper.cardEnergyFont_L, "EMC: " + TransmutationTable.PLAYER_EMC, x - 24 * Settings.scale, Settings.HEIGHT / 2.0F - 64f);
     }
 
     private void renderList(SpriteBatch sb, ArrayList<ListItem<T>> items, float startX) {
