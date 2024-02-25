@@ -12,6 +12,6 @@
     "basemod",
     "stslib"
   ],
-  "optional_dependencies":["loadout"]
+  "optional_dependencies":["loadout", "Library of Ruina"]
 }
 

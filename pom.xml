@@ -4,7 +4,7 @@
     <groupId>emcmod</groupId>
 
     <artifactId>ProjectE</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.4</version>
     <name>Project E</name>
     <description>Project E but in Spire</description>
     <!-- Change the above for mod information. -->
@@ -62,7 +62,14 @@
             <systemPath>${Steam.path}/workshop/content/646570/2814267979/loadout.jar</systemPath>
             <optional>true</optional>
         </dependency>
-
+        <dependency>
+            <groupId>lor</groupId>
+            <artifactId>lor</artifactId>
+            <version>1.1.6</version>
+            <scope>system</scope>
+            <systemPath>${Steam.path}/workshop/content/646570/2405293544/lor.jar</systemPath>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 
