@@ -176,7 +176,10 @@ public class ListItem<T> {
         if(TransmutationTable.PLAYER_EMC >= this.emc) {
             //give to player
             if (item instanceof AbstractCard) {
-                AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(((AbstractCard) item).makeCopy(), InputHelper.mX, InputHelper.mY));
+                AbstractCard card = ((AbstractCard) item).makeCopy();
+                AbstractDungeon.player.masterDeck.addToTop(card);
+                AbstractDungeon.player.relics.forEach(r -> r.onObtainCard(card));
+                AbstractDungeon.player.relics.forEach(AbstractRelic::onMasterDeckChange);
             } else if (item instanceof AbstractRelic) {
                 ProjectEMod.relicsToAdd.add(((AbstractRelic) item).makeCopy());
             } else if (item instanceof AbstractPotion) {
