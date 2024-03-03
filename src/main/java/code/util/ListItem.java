@@ -63,6 +63,7 @@ public class ListItem<T> {
             i.isSeen = true;
             this.item = (T) i;
             ((AbstractRelic)this.item).counter = ((AbstractRelic) item).counter;
+            ((AbstractRelic)this.item).usedUp = ((AbstractRelic) item).usedUp;
         } else if (item instanceof AbstractPotion) {
             AbstractPotion i = ((AbstractPotion) item);
             this.id = i.ID;
