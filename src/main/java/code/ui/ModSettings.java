@@ -5,13 +5,13 @@ import basemod.ModLabeledToggleButton;
 import basemod.ModMinMaxSlider;
 import basemod.ModPanel;
 import code.ProjectEMod;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.UIStrings;
-import loadout.util.TextureLoader;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -61,7 +61,7 @@ public class ModSettings {
     public static void initModPanel() {
 
         // Load the Mod Badge
-        Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
+        Texture badgeTexture = new Texture(Gdx.files.internal(BADGE_IMAGE));
 
         ModPanel settingsPanel = new ModPanel();
 
