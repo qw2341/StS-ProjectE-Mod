@@ -58,6 +58,10 @@ public class ProjectEMod implements
 
     public static ExceptionSaver exceptionSaver;
 
+    public static float CURSE_REMOVE_MULT = -1.0f;
+
+    public static float CURSE_OBTAIN_DISCOUNT_RATE = 0.25f;
+
     public static final String modID = "projecte";
 
     public static String makeID(String idText) {

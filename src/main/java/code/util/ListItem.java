@@ -137,6 +137,10 @@ public class ListItem<T> {
             } else if (item instanceof AbstractPotion) {
                 return this.emc;
             }
+        } else {
+            if (item instanceof AbstractCard) {
+                if (((AbstractCard) item).type == AbstractCard.CardType.CURSE || ((AbstractCard) item).type == AbstractCard.CardType.STATUS) return (int) (this.emc * ProjectEMod.CURSE_OBTAIN_DISCOUNT_RATE);
+            }
         }
 
         return this.emc;
@@ -154,6 +158,7 @@ public class ListItem<T> {
             }
 
             AbstractDungeon.player.masterDeck.removeCard(card);
+            card.onRemoveFromMasterDeck();
             if(!TransmutationTable.savedCardIDs.contains(card.cardID)) {
                 TransmutationTable.savedCardIDs.add(card.cardID);
                 TransmutationTable.savedCards.add(card.makeCopy());
