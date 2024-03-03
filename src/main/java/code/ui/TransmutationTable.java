@@ -221,6 +221,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     @Override
     public void onLoad(EMCData emcData) {
         resetLists();
+        if(emcData == null) return;
         savedCardIDs.addAll(emcData.savedCardIDs);
         savedRelicIDs.addAll(emcData.savedRelicIDs);
         savedPotionIDs.addAll(emcData.savedPotionIDs);
