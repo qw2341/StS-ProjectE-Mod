@@ -13,9 +13,9 @@ public class EMCData implements Serializable {
     public HashSet<String> savedRelicIDs;
     public HashSet<String> savedPotionIDs;
 
-    public int PLAYER_EMC = 0;
+    public long PLAYER_EMC = 0;
 
-    public EMCData(HashSet<String> savedCardIDs, HashSet<String> savedRelicIDs, HashSet<String> savedPotionIDs, int PLAYER_EMC) {
+    public EMCData(HashSet<String> savedCardIDs, HashSet<String> savedRelicIDs, HashSet<String> savedPotionIDs, long PLAYER_EMC) {
         this.savedCardIDs = savedCardIDs;
         this.savedRelicIDs = savedRelicIDs;
         this.savedPotionIDs = savedPotionIDs;

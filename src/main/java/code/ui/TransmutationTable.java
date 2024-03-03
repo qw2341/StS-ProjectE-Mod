@@ -6,6 +6,7 @@ import basemod.patches.com.megacrit.cardcrawl.helpers.PotionLibrary.PotionHelper
 import code.ProjectEMod;
 import code.helpers.EMCData;
 import code.util.ExceptionCardList;
+import code.util.ExceptionRelicList;
 import code.util.ExceptionSaver;
 import code.util.ListItem;
 import com.badlogic.gdx.graphics.Color;
@@ -42,7 +43,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     public static final ArrayList<AbstractPotion> savedPotions;
     public static final HashSet<String> savedPotionIDs;
 
-    public static int PLAYER_EMC = 0;
+    public static long PLAYER_EMC = 0;
 
     public static TransmutationTable INSTANCE;
 
@@ -107,17 +108,17 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     public static int getCardEMC(AbstractCard card) {
         if(ExceptionSaver.cardExceptions.containsKey(card.cardID)) {
             int ret = ExceptionSaver.cardExceptions.get(card.cardID);
-                return ret *
-                        ((card.type == AbstractCard.CardType.CURSE
-                                || card.type == AbstractCard.CardType.STATUS) ? -1 : 1);
+                return (int) (ret *
+                                        ((card.type == AbstractCard.CardType.CURSE
+                                                || card.type == AbstractCard.CardType.STATUS) ? ProjectEMod.CURSE_OBTAIN_DISCOUNT_RATE : 1));
         }
 
         if(ExceptionCardList.exceptionList.containsKey(card.cardID)) {
             int ret = ExceptionCardList.exceptionList.get(card.cardID);
             if(ret != -1) {
-                return ret *
-                        ((card.type == AbstractCard.CardType.CURSE
-                                || card.type == AbstractCard.CardType.STATUS) ? -1 : 1);
+                return (int) (ret *
+                                        ((card.type == AbstractCard.CardType.CURSE
+                                                || card.type == AbstractCard.CardType.STATUS) ? ProjectEMod.CURSE_REMOVE_MULT : 1));
             }
         }
 
@@ -144,6 +145,11 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
         if(ExceptionSaver.relicExceptions.containsKey(relic.relicId)) {
             return ExceptionSaver.relicExceptions.get(relic.relicId);
         }
+
+        if(ExceptionRelicList.specialList.containsKey(relic.relicId)) {
+            return ExceptionRelicList.specialList.get(relic.relicId);
+        }
+
         switch (relic.tier) {
 
             case DEPRECATED:

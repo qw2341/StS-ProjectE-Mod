@@ -14,6 +14,8 @@ public class ExceptionRelicList {
 
     public static HashMap<String, Integer> perChargeList = new HashMap<>();
 
+    public static HashMap<String, Integer> specialList = new HashMap<>();
+
     static {
         singleUseList.add(CallingBell.ID);
         singleUseList.add(TinyHouse.ID);
@@ -31,6 +33,8 @@ public class ExceptionRelicList {
         noValueList.add(SpiritPoop.ID);
 
         perChargeList.put(NeowsLament.ID, 3);
+
+        specialList.put("loadout:AllInOneBag",Integer.MAX_VALUE);
     }
 
 
