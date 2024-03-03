@@ -121,10 +121,14 @@ public class ListItem<T> {
             if (item instanceof AbstractCard) {
                 return this.emc;
             } else if (item instanceof AbstractRelic) {
+                String relicId = ((AbstractRelic) item).relicId;
+                if(ExceptionRelicList.perChargeList.containsKey(relicId)){
+                    return (this.emc / ExceptionRelicList.perChargeList.get(relicId)) * ((AbstractRelic) item).counter;
+                }
                 return this.emc *
                         (((AbstractRelic) item).usedUp ||
-                                ExceptionRelicList.singleUseList.contains(((AbstractRelic) item).relicId) ||
-                                ExceptionRelicList.noValueList.contains(((AbstractRelic) item).relicId)
+                                ExceptionRelicList.singleUseList.contains(relicId) ||
+                                ExceptionRelicList.noValueList.contains(relicId)
                                 ? 0 : 1);
             } else if (item instanceof AbstractPotion) {
                 return this.emc;
@@ -134,7 +138,7 @@ public class ListItem<T> {
         return this.emc;
     }
 
-    public ListItem<T> toEMC() {
+    public void toEMC() {
         //remember
 
 
@@ -162,10 +166,9 @@ public class ListItem<T> {
 
         //add emc
         TransmutationTable.PLAYER_EMC += getEmc();
-        return this;
     }
 
-    public ListItem<T> toPlayer() {
+    public void toPlayer() {
         if(TransmutationTable.PLAYER_EMC >= this.emc) {
             //give to player
             if (item instanceof AbstractCard) {
@@ -175,14 +178,12 @@ public class ListItem<T> {
             } else if (item instanceof AbstractPotion) {
                 if(AbstractDungeon.player.potionSlots <= AbstractDungeon.player.potions.stream()
                         .filter(potion -> !(potion instanceof PotionSlot))
-                        .count()) return this;
+                        .count()) return;
                 AbstractDungeon.player.obtainPotion(((AbstractPotion) item).makeCopy());
             }
             //deduct emc
             TransmutationTable.PLAYER_EMC -= this.emc;
         }
-
-        return this;
     }
 
     @Override
