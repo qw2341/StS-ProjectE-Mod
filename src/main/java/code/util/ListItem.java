@@ -1,17 +1,21 @@
 package code.util;
 
+import basemod.devcommands.deck.DeckManipulator;
 import code.ProjectEMod;
 import code.ui.TransmutationTable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.actions.unique.AddCardToDeckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.Hitbox;
+import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.potions.PotionSlot;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
 public class ListItem<T> {
 
@@ -172,7 +176,7 @@ public class ListItem<T> {
         if(TransmutationTable.PLAYER_EMC >= this.emc) {
             //give to player
             if (item instanceof AbstractCard) {
-                AbstractDungeon.player.masterDeck.addToTop((AbstractCard) ((AbstractCard) item).makeCopy());
+                AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(((AbstractCard) item).makeCopy(), InputHelper.mX, InputHelper.mY));
             } else if (item instanceof AbstractRelic) {
                 ProjectEMod.relicsToAdd.add(((AbstractRelic) item).makeCopy());
             } else if (item instanceof AbstractPotion) {
