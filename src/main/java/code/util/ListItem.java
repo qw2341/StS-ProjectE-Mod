@@ -199,7 +199,7 @@ public class ListItem<T> {
                 AbstractDungeon.player.obtainPotion(((AbstractPotion) item).makeCopy());
             }
             //deduct emc
-            TransmutationTable.PLAYER_EMC -= this.emc;
+            TransmutationTable.PLAYER_EMC -= getEmc();
         }
     }
 
