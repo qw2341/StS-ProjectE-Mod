@@ -148,7 +148,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
                     try {
                         emc = Integer.parseInt(val);
                     } catch (NumberFormatException e) {
-                        emc = -1;
+                        return;
                     }
 
                     //set emc for item
