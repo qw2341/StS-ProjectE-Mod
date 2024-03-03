@@ -10,5 +10,11 @@
       "Transmutation Table",
       "Converts cards, relics, and potions into EMC and vice versa."
     ]
+  },
+  "projecte:AbstractScreenPanel": {
+    "TEXT": [
+      "Enter new EMC",
+      "Search ..."
+    ]
   }
 }

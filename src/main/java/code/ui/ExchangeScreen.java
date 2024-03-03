@@ -4,6 +4,7 @@ package code.ui;
 import basemod.ReflectionHacks;
 import code.ProjectEMod;
 import code.util.ListItem;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.Loader;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -13,6 +14,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.helpers.controller.CInputActionSet;
+import com.megacrit.cardcrawl.helpers.input.InputAction;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.TutorialStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
@@ -59,6 +61,9 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
     private float startY = Settings.HEIGHT - 300.0F * Settings.scale;
     private float spaceY = 50.0f * Settings.scale;
 
+    private final InputAction tabKey;
+    public TextPopup textPopup;
+
     public ExchangeScreen() {
         trasmutableCards = new ArrayList<>();
         trasmutableRelics = new ArrayList<>();
@@ -73,9 +78,13 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         curY -= spaceY;
 
         this.buttons = new HeaderButtonPlus[] {this.cardButton, this.relicButton, this.potionButton};
+
+        this.tabKey = new InputAction(Input.Keys.TAB);
     }
 
-
+    public boolean isTabbing() {
+        return this.tabKey.isPressed();
+    }
 
     public void open() {
 
@@ -141,6 +150,11 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
     public void render(SpriteBatch sb) {
         if(!show) return;
 
+        if(textPopup != null && textPopup.shown) {
+            textPopup.render(sb);
+            return;
+        }
+
         currentPanel.render(sb);
 
         for (HeaderButtonPlus b : this.buttons) b.render(sb);
@@ -157,6 +171,10 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         if(ProjectEMod.isScreenUp) hide();
         if(!show) return;
 
+        if(textPopup != null && textPopup.shown) {
+            textPopup.update();
+            return;
+        }
 
 
         if (InputHelper.pressedEscape) {

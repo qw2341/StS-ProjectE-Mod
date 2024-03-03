@@ -1,29 +1,37 @@
 package code.ui;
 
 import code.ProjectEMod;
+import code.util.ExceptionSaver;
 import code.util.ListItem;
 import code.util.TextSearchBox;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
+import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBar;
 import com.megacrit.cardcrawl.screens.mainMenu.ScrollBarListener;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
 public class AbstractScreenPanel<T> implements ScrollBarListener {
+
+    private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(ProjectEMod.makeID("AbstractScreenPanel"));
+    public static final String[] TEXT = uiStrings.TEXT;
     protected ScrollBar scrollBar;
 
     public static final float START_X = 400.0F * Settings.scale;
@@ -76,6 +84,8 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
         this.spaceX = itemWidth + spacing;
         this.spaceY = itemHeight + spacing;
         this.itemsPerLine = Math.round(SEGMENT_WIDTH / (getItemWidth() + this.spaceX));
+
+
     }
     protected void callOnOpen() {
         onChangeEMC();
@@ -84,8 +94,29 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
     public void onChangeEMC() {
         this.playerItems = getPlayerItems.getItems();
         this.transmutableItems = getTransmutableItems.getItems();
-        ProjectEMod.logger.info("Stored items: " + this.transmutableItems.toString());
+        //ProjectEMod.logger.info("Stored items: " + this.transmutableItems.toString());
         updateFilters();
+    }
+
+    public void refreshEMC() {
+        this.playerItems.forEach(item -> {
+            if(item.item instanceof AbstractCard) {
+                item.emc = TransmutationTable.getCardEMC((AbstractCard) item.item);
+            } else if(item.item instanceof AbstractRelic) {
+                item.emc = TransmutationTable.getRelicEMC((AbstractRelic) item.item);
+            } else if(item.item instanceof AbstractPotion) {
+                item.emc = TransmutationTable.getPotionEMC((AbstractPotion) item.item);
+            }
+        });
+        this.transmutableItems.forEach(item -> {
+            if(item.item instanceof AbstractCard) {
+                item.emc = TransmutationTable.getCardEMC((AbstractCard) item.item);
+            } else if(item.item instanceof AbstractRelic) {
+                item.emc = TransmutationTable.getRelicEMC((AbstractRelic) item.item);
+            } else if(item.item instanceof AbstractPotion) {
+                item.emc = TransmutationTable.getPotionEMC((AbstractPotion) item.item);
+            }
+        });
     }
 
     public void updateItemClickLogic() {
@@ -109,6 +140,36 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
                 }
                 onChangeEMC();
                 clickStartedItem = null;
+            }
+
+            if(InputHelper.justReleasedClickRight) {
+                TransmutationTable.exchangeScreen.textPopup = new TextPopup(TEXT[0] + " : " + hoveredItem.name, true, (val) -> {
+                    int emc;
+                    try {
+                        emc = Integer.parseInt(val);
+                    } catch (NumberFormatException e) {
+                        emc = -1;
+                    }
+
+                    //set emc for item
+                    if(hoveredItem.item instanceof AbstractCard) {
+                        ExceptionSaver.cardExceptions.put(hoveredItem.id, emc);
+                    } else if(hoveredItem.item instanceof AbstractRelic) {
+                        ExceptionSaver.relicExceptions.put(hoveredItem.id, emc);
+                    } else if(hoveredItem.item instanceof AbstractPotion) {
+                        ExceptionSaver.potionExceptions.put(hoveredItem.id, emc);
+                    }
+
+                },()->{
+                    try {
+                        ProjectEMod.exceptionSaver.save();
+                    } catch (IOException e) {
+                        ProjectEMod.logger.info("EMC value saved successfully");
+                    }
+                    refreshEMC();
+                },()->{});
+
+                TransmutationTable.exchangeScreen.textPopup.open(String.valueOf(hoveredItem.emc));
             }
 
         }
@@ -147,7 +208,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
 
     public void updateFilters() {
         resetFilters();
-        this.playerItems.forEach(i -> i.shouldRender = testFilters(i));
+        this.playerItems.forEach(i -> i.shouldRender = testFilters(i) && (i.emc >= 0 || TransmutationTable.PLAYER_EMC >= -i.emc));
         this.transmutableItems.forEach(i -> i.shouldRender = testFilters(i) && TransmutationTable.PLAYER_EMC >= i.emc);
         calculateScrollBounds();
     }
@@ -168,11 +229,12 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
             {
                 hoveredItem = item;
             }
-            if(item.hb.hovered && InputHelper.justClickedLeft) {
+            if(item.hb.hovered && (InputHelper.justClickedLeft||InputHelper.justClickedRight)) {
                 item.hb.clicked = true;
                 clickStartedItem = item;
                 //ProjectEMod.logger.info("Clicked " + clickStartedItem.id);
                 InputHelper.justClickedLeft = false;
+                InputHelper.justClickedRight = false;
             }
         }
     }

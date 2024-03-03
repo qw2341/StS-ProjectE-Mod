@@ -10,5 +10,11 @@
       "转换桌",
       "将卡牌，遗物，以及药水转变为EMC，反之亦然。"
     ]
+  },
+  "projecte:AbstractScreenPanel": {
+    "TEXT": [
+      "设定新EMC值",
+      "Search ..."
+    ]
   }
 }

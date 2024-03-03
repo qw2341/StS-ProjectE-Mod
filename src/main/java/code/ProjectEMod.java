@@ -2,8 +2,10 @@ package code;
 
 import basemod.AutoAdd;
 import basemod.BaseMod;
+import basemod.devcommands.ConsoleCommand;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
+import code.commands.EMCCommand;
 import code.ui.TransmutationTable;
 import code.util.ExceptionSaver;
 import com.badlogic.gdx.graphics.Color;
@@ -153,6 +155,7 @@ public class ProjectEMod implements
         BaseMod.addTopPanelItem(tt);
         BaseMod.addSaveField(makeID("emcsave"), tt);
 
+        ConsoleCommand.addCommand("emc", EMCCommand.class);
 //        try {
 //            ExceptionSaver.printOutAllEMCs();
 //        } catch (IOException e) {

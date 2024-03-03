@@ -148,10 +148,15 @@ public class ListItem<T> {
 
         //remove it from player
         if (item instanceof AbstractCard) {
-            AbstractDungeon.player.masterDeck.removeCard((AbstractCard) item);
-            if(!TransmutationTable.savedCardIDs.contains(((AbstractCard) item).cardID)) {
-                TransmutationTable.savedCardIDs.add(((AbstractCard) item).cardID);
-                TransmutationTable.savedCards.add(((AbstractCard) item).makeCopy());
+            AbstractCard card = (AbstractCard) item;
+            if(card.type == AbstractCard.CardType.CURSE || card.type == AbstractCard.CardType.STATUS) {
+                if(TransmutationTable.PLAYER_EMC < this.emc) return;
+            }
+
+            AbstractDungeon.player.masterDeck.removeCard(card);
+            if(!TransmutationTable.savedCardIDs.contains(card.cardID)) {
+                TransmutationTable.savedCardIDs.add(card.cardID);
+                TransmutationTable.savedCards.add(card.makeCopy());
             }
 
         } else if (item instanceof AbstractRelic) {

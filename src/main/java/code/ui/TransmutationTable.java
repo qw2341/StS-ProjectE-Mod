@@ -6,6 +6,7 @@ import basemod.patches.com.megacrit.cardcrawl.helpers.PotionLibrary.PotionHelper
 import code.ProjectEMod;
 import code.helpers.EMCData;
 import code.util.ExceptionCardList;
+import code.util.ExceptionSaver;
 import code.util.ListItem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -104,6 +105,13 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     }
 
     public static int getCardEMC(AbstractCard card) {
+        if(ExceptionSaver.cardExceptions.containsKey(card.cardID)) {
+            int ret = ExceptionSaver.cardExceptions.get(card.cardID);
+                return ret *
+                        ((card.type == AbstractCard.CardType.CURSE
+                                || card.type == AbstractCard.CardType.STATUS) ? -1 : 1);
+        }
+
         if(ExceptionCardList.exceptionList.containsKey(card.cardID)) {
             int ret = ExceptionCardList.exceptionList.get(card.cardID);
             if(ret != -1) {
@@ -133,6 +141,9 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     }
 
     public static int getRelicEMC(AbstractRelic relic) {
+        if(ExceptionSaver.relicExceptions.containsKey(relic.relicId)) {
+            return ExceptionSaver.relicExceptions.get(relic.relicId);
+        }
         switch (relic.tier) {
 
             case DEPRECATED:
@@ -157,6 +168,9 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     }
 
     public static int getPotionEMC(AbstractPotion potion) {
+        if(ExceptionSaver.potionExceptions.containsKey(potion.ID)) {
+            return ExceptionSaver.potionExceptions.get(potion.ID);
+        }
         switch (potion.rarity) {
 
             case PLACEHOLDER:
