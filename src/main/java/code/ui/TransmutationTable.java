@@ -5,6 +5,7 @@ import basemod.abstracts.CustomSavable;
 import basemod.patches.com.megacrit.cardcrawl.helpers.PotionLibrary.PotionHelperGetPotions;
 import code.ProjectEMod;
 import code.helpers.EMCData;
+import code.util.ExceptionCardList;
 import code.util.ListItem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -103,6 +104,15 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     }
 
     public static int getCardEMC(AbstractCard card) {
+        if(ExceptionCardList.exceptionList.containsKey(card.cardID)) {
+            int ret = ExceptionCardList.exceptionList.get(card.cardID);
+            if(ret != -1) {
+                return ret *
+                        ((card.type == AbstractCard.CardType.CURSE
+                                || card.type == AbstractCard.CardType.STATUS) ? -1 : 1);
+            }
+        }
+
         switch (card.rarity) {
 
             case BASIC:
@@ -116,7 +126,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
             case RARE:
                 return 200;
             case CURSE:
-                return -25;
+                return -200;
             default:
                 return 10;
         }

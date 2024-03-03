@@ -5,6 +5,7 @@ import basemod.BaseMod;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
 import code.ui.TransmutationTable;
+import code.util.ExceptionSaver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -20,6 +21,7 @@ import code.util.ProAudio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -52,6 +54,8 @@ public class ProjectEMod implements
 
     public static boolean isScreenUp = false;
 
+    public static ExceptionSaver exceptionSaver;
+
     public static final String modID = "projecte";
 
     public static String makeID(String idText) {
@@ -77,6 +81,11 @@ public class ProjectEMod implements
     public ProjectEMod() {
         BaseMod.subscribe(this);
 
+        try {
+            exceptionSaver = new ExceptionSaver();
+        } catch (IOException e) {
+            logger.info("Error loading exception lists");
+        }
     }
 
     public static String makePath(String resourcePath) {
@@ -143,6 +152,12 @@ public class ProjectEMod implements
         TransmutationTable tt = new TransmutationTable();
         BaseMod.addTopPanelItem(tt);
         BaseMod.addSaveField(makeID("emcsave"), tt);
+
+//        try {
+//            ExceptionSaver.printOutAllEMCs();
+//        } catch (IOException e) {
+//            logger.info("Failed to print out all emcs!");
+//        }
     }
 
     @Override
