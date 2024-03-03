@@ -300,7 +300,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
 
     protected void calculateScrollBounds()
     {
-        int size = playerItems.size();
+        int size = Math.max(playerItems.size(), transmutableItems.size());
 
         int scrollTmp = 0;
         if (size > this.itemsPerLine) {
