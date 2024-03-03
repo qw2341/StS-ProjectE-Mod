@@ -56,6 +56,7 @@ public class ListItem<T> {
             this.emc = TransmutationTable.getRelicEMC(i);
             i.isSeen = true;
             this.item = (T) i;
+            ((AbstractRelic)this.item).counter = ((AbstractRelic) item).counter;
         } else if (item instanceof AbstractPotion) {
             AbstractPotion i = ((AbstractPotion) item);
             this.id = i.ID;
@@ -127,7 +128,7 @@ public class ListItem<T> {
             } else if (item instanceof AbstractRelic) {
                 String relicId = ((AbstractRelic) item).relicId;
                 if(ExceptionRelicList.perChargeList.containsKey(relicId)){
-                    return (this.emc / ExceptionRelicList.perChargeList.get(relicId)) * ((AbstractRelic) item).counter;
+                    return (int) Math.round(((float) this.emc / (float) ExceptionRelicList.perChargeList.get(relicId)) * (float) ((AbstractRelic) item).counter);
                 }
                 return this.emc *
                         (((AbstractRelic) item).usedUp ||
