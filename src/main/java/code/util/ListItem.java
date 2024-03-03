@@ -1,7 +1,9 @@
 package code.util;
 
 import basemod.devcommands.deck.DeckManipulator;
+import basemod.interfaces.PostDungeonInitializeSubscriber;
 import code.ProjectEMod;
+import code.ui.ModSettings;
 import code.ui.TransmutationTable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -45,6 +47,10 @@ public class ListItem<T> {
             this.hb = i.hb;
             this.emc = TransmutationTable.getCardEMC(i);
             this.item = (T) i;
+//            ProjectEMod.logger.info("Card ID: " + id + " EMC = " + this.emc);
+//            ProjectEMod.logger.info("Curse obtain disc = " + ModSettings.CURSE_OBTAIN_DISCOUNT_RATE);
+//            ProjectEMod.logger.info("Curse removal mult = " + ModSettings.CURSE_REMOVE_MULT);
+
         } else if (item instanceof AbstractRelic) {
             AbstractRelic i = ((AbstractRelic) item).makeCopy();
             this.id = i.relicId;
@@ -122,29 +128,30 @@ public class ListItem<T> {
     }
 
     public int getEmc() {
-        if (isOwnedByPlayer) {
-            if (item instanceof AbstractCard) {
-                return this.emc;
-            } else if (item instanceof AbstractRelic) {
-                String relicId = ((AbstractRelic) item).relicId;
-                if(ExceptionRelicList.perChargeList.containsKey(relicId)){
-                    return (int) Math.round(((float) this.emc / (float) ExceptionRelicList.perChargeList.get(relicId)) * (float) ((AbstractRelic) item).counter);
+        float mult = isOwnedByPlayer ? ModSettings.TO_EMC_MULT : ModSettings.TO_ITEM_MULT;
+        if(ModSettings.ENABLE_EXPLOIT_PREVENTION) {
+
+            if (isOwnedByPlayer) {
+                if (item instanceof AbstractRelic) {
+                    String relicId = ((AbstractRelic) item).relicId;
+                    if(ExceptionRelicList.perChargeList.containsKey(relicId)){
+                        mult *= ((float) ((AbstractRelic) item).counter / (float) ExceptionRelicList.perChargeList.get(relicId));
+                    }
+                    mult *=
+                            (((AbstractRelic) item).usedUp ||
+                                    ExceptionRelicList.singleUseList.contains(relicId) ||
+                                    ExceptionRelicList.noValueList.contains(relicId)
+                                    ? 0 : 1);
                 }
-                return this.emc *
-                        (((AbstractRelic) item).usedUp ||
-                                ExceptionRelicList.singleUseList.contains(relicId) ||
-                                ExceptionRelicList.noValueList.contains(relicId)
-                                ? 0 : 1);
-            } else if (item instanceof AbstractPotion) {
-                return this.emc;
-            }
-        } else {
-            if (item instanceof AbstractCard) {
-                if (((AbstractCard) item).type == AbstractCard.CardType.CURSE || ((AbstractCard) item).type == AbstractCard.CardType.STATUS) return (int) (this.emc * ProjectEMod.CURSE_OBTAIN_DISCOUNT_RATE);
+            } else {
+                if (item instanceof AbstractCard) {
+                    if (((AbstractCard) item).type == AbstractCard.CardType.CURSE || ((AbstractCard) item).type == AbstractCard.CardType.STATUS)
+                        mult *= ModSettings.CURSE_OBTAIN_DISCOUNT_RATE;
+                }
             }
         }
 
-        return this.emc;
+        return Math.round(this.emc * mult);
     }
 
     public void toEMC() {
@@ -155,7 +162,7 @@ public class ListItem<T> {
         if (item instanceof AbstractCard) {
             AbstractCard card = (AbstractCard) item;
             if(card.type == AbstractCard.CardType.CURSE || card.type == AbstractCard.CardType.STATUS) {
-                if(TransmutationTable.PLAYER_EMC < this.emc) return;
+                if(TransmutationTable.PLAYER_EMC < getEmc()) return;
             }
 
             AbstractDungeon.player.masterDeck.removeCard(card);
@@ -184,7 +191,7 @@ public class ListItem<T> {
     }
 
     public void toPlayer() {
-        if(TransmutationTable.PLAYER_EMC >= this.emc) {
+        if(TransmutationTable.PLAYER_EMC >= getEmc()) {
             //give to player
             if (item instanceof AbstractCard) {
                 AbstractCard card = ((AbstractCard) item).makeCopy();

@@ -16,5 +16,15 @@
       "Enter new EMC for",
       "Search ..."
     ]
+  },
+  "projecte:OptionsMenu": {
+    "TEXT": [
+      "Enable Exploit Prevention",
+      "Like per counter EMCs for Neows Lament and no emcs for single use relics like Calling Bell",
+      "Curse Removal Multiplier",
+      "Curse Obtain EMC Discount",
+      "Conversion To EMC Multiplier",
+      "Conversion To Item Multiplier"
+    ]
   }
 }

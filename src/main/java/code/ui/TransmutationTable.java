@@ -110,7 +110,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
             int ret = ExceptionSaver.cardExceptions.get(card.cardID);
                 return (int) (ret *
                                         ((card.type == AbstractCard.CardType.CURSE
-                                                || card.type == AbstractCard.CardType.STATUS) ? ProjectEMod.CURSE_OBTAIN_DISCOUNT_RATE : 1));
+                                                || card.type == AbstractCard.CardType.STATUS) ? ModSettings.CURSE_REMOVE_MULT : 1));
         }
 
         if(ExceptionCardList.exceptionList.containsKey(card.cardID)) {
@@ -118,7 +118,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
             if(ret != -1) {
                 return (int) (ret *
                                         ((card.type == AbstractCard.CardType.CURSE
-                                                || card.type == AbstractCard.CardType.STATUS) ? ProjectEMod.CURSE_REMOVE_MULT : 1));
+                                                || card.type == AbstractCard.CardType.STATUS) ? ModSettings.CURSE_REMOVE_MULT : 1));
             }
         }
 

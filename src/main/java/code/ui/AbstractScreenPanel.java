@@ -142,7 +142,7 @@ public class AbstractScreenPanel<T> implements ScrollBarListener {
                 clickStartedItem = null;
             }
 
-            if(InputHelper.justReleasedClickRight) {
+            if(InputHelper.justReleasedClickRight && TransmutationTable.exchangeScreen.isTabbing()) {
                 TransmutationTable.exchangeScreen.textPopup = new TextPopup(TEXT[0] + " : " + hoveredItem.name, true, (val) -> {
                     int emc;
                     try {

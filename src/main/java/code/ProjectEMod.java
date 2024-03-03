@@ -6,6 +6,7 @@ import basemod.devcommands.ConsoleCommand;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
 import code.commands.EMCCommand;
+import code.ui.ModSettings;
 import code.ui.TransmutationTable;
 import code.util.ExceptionSaver;
 import com.badlogic.gdx.graphics.Color;
@@ -58,9 +59,7 @@ public class ProjectEMod implements
 
     public static ExceptionSaver exceptionSaver;
 
-    public static float CURSE_REMOVE_MULT = -1.0f;
 
-    public static float CURSE_OBTAIN_DISCOUNT_RATE = 0.25f;
 
     public static final String modID = "projecte";
 
@@ -87,6 +86,7 @@ public class ProjectEMod implements
     public ProjectEMod() {
         BaseMod.subscribe(this);
 
+        ModSettings.loadSettings();
         try {
             exceptionSaver = new ExceptionSaver();
         } catch (IOException e) {
@@ -160,6 +160,9 @@ public class ProjectEMod implements
         BaseMod.addSaveField(makeID("emcsave"), tt);
 
         ConsoleCommand.addCommand("emc", EMCCommand.class);
+
+        ModSettings.initModPanel();
+
 //        try {
 //            ExceptionSaver.printOutAllEMCs();
 //        } catch (IOException e) {
