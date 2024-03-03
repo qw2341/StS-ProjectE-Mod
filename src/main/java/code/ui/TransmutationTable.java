@@ -116,7 +116,7 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
             case RARE:
                 return 200;
             case CURSE:
-                return 1;
+                return -25;
             default:
                 return 10;
         }
