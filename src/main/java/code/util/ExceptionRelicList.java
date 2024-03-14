@@ -27,6 +27,8 @@ public class ExceptionRelicList {
         singleUseList.add(WarPaint.ID);
         singleUseList.add(Whetstone.ID);
         singleUseList.add(Astrolabe.ID);
+        singleUseList.add(Waffle.ID);
+        singleUseList.add(OldCoin.ID);
 
         noValueList.add(MarkOfTheBloom.ID);
         noValueList.add(NlothsMask.ID);
