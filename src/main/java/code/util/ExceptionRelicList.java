@@ -29,12 +29,21 @@ public class ExceptionRelicList {
         singleUseList.add(Astrolabe.ID);
         singleUseList.add(Waffle.ID);
         singleUseList.add(OldCoin.ID);
+        singleUseList.add(PotionBelt.ID);
+        singleUseList.add(Strawberry.ID);
+        singleUseList.add(Pear.ID);
+        singleUseList.add(Mango.ID);
 
         noValueList.add(MarkOfTheBloom.ID);
         noValueList.add(NlothsMask.ID);
         noValueList.add(SpiritPoop.ID);
+        noValueList.add(GremlinMask.ID);
 
         perChargeList.put(NeowsLament.ID, 3);
+        perChargeList.put(Matryoshka.ID, 2);
+        perChargeList.put(Omamori.ID, 2);
+        perChargeList.put(WingBoots.ID, 3);
+        perChargeList.put(Circlet.ID, 1);
 
         specialList.put("loadout:AllInOneBag",Integer.MAX_VALUE);
     }
