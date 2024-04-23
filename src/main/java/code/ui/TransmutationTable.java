@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
@@ -90,7 +91,8 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     }
 
     public void renderEMC(SpriteBatch sb){
-        FontHelper.renderFontLeft(sb, FontHelper.topPanelInfoFont, "EMC: " + PLAYER_EMC, this.x - 64.0f - FontHelper.getWidth(FontHelper.topPanelInfoFont,"EMC: " + PLAYER_EMC, Settings.scale), this.y + this.hb_h / 2f, Settings.CREAM_COLOR);
+        FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, Long.toString(PLAYER_EMC), this.x + 58.0F * Settings.scale, this.y + 25.0F * Settings.scale, Settings.CREAM_COLOR);
+        //FontHelper.renderFontLeft(sb, FontHelper.topPanelInfoFont, "EMC: " + PLAYER_EMC, this.x - 64.0f - FontHelper.getWidth(FontHelper.topPanelInfoFont,"EMC: " + PLAYER_EMC, Settings.scale), this.y + this.hb_h / 2f, Settings.CREAM_COLOR);
     }
 
     public static void renderScreen(SpriteBatch sb) {

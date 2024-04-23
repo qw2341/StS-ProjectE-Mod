@@ -24,6 +24,7 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.relics.TinyChest;
 import com.megacrit.cardcrawl.ui.buttons.GridSelectConfirmButton;
 import loadout.LoadoutMod;
+import loadout.relics.AllInOneBag;
 import loadout.screens.AbstractSelectScreen;
 
 import java.util.ArrayList;
@@ -112,7 +113,11 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
             AbstractDungeon.overlayMenu.cancelButton.hide();
             AbstractDungeon.overlayMenu.proceedButton.hide();
             //AbstractDungeon.closeCurrentScreen();
-            if(Loader.isModLoaded("loadout")) LoadoutMod.isScreenUp = false;
+            if(Loader.isModLoaded("loadout")) {
+                AllInOneBag.INSTANCE.closeAllScreens();
+
+                LoadoutMod.isScreenUp = false;
+            }
             ProjectEMod.isScreenUp = false;
             AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NO_INTERACT;
         }
@@ -144,7 +149,9 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         show = false;
         ProjectEMod.isScreenUp = false;
 
-        if(Loader.isModLoaded("loadout")) LoadoutMod.isScreenUp = false;
+        if(Loader.isModLoaded("loadout")) {
+            AllInOneBag.INSTANCE.showButton();
+        }
     }
 
     public void render(SpriteBatch sb) {
