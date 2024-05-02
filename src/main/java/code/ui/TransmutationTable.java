@@ -107,24 +107,8 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
 //        }
     }
 
-    public static int getCardEMC(AbstractCard card) {
-        if(ExceptionSaver.cardExceptions.containsKey(card.cardID)) {
-            int ret = ExceptionSaver.cardExceptions.get(card.cardID);
-                return (int) (ret *
-                                        ((card.type == AbstractCard.CardType.CURSE
-                                                || card.type == AbstractCard.CardType.STATUS) ? ModSettings.CURSE_REMOVE_MULT : 1));
-        }
-
-        if(ExceptionCardList.exceptionList.containsKey(card.cardID)) {
-            int ret = ExceptionCardList.exceptionList.get(card.cardID);
-            if(ret != -1) {
-                return (int) (ret *
-                                        ((card.type == AbstractCard.CardType.CURSE
-                                                || card.type == AbstractCard.CardType.STATUS) ? ModSettings.CURSE_REMOVE_MULT : 1));
-            }
-        }
-
-        switch (card.rarity) {
+    private static int getCardEMCRarity(AbstractCard.CardRarity rarity) {
+        switch (rarity) {
 
             case BASIC:
                 return 5;
@@ -137,10 +121,31 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
             case RARE:
                 return 200;
             case CURSE:
-                return -200;
+                return 200;
             default:
                 return 10;
         }
+    }
+
+    public static int getCardEMC(AbstractCard card) {
+        float mult = ((card.type == AbstractCard.CardType.CURSE
+                || card.type == AbstractCard.CardType.STATUS ||
+                (ModSettings.TREAT_BASIC_AS_CURSE && card.rarity == AbstractCard.CardRarity.BASIC)
+        ) ? ModSettings.CURSE_REMOVE_MULT : 1);
+
+        if(ExceptionSaver.cardExceptions.containsKey(card.cardID)) {
+            int ret = ExceptionSaver.cardExceptions.get(card.cardID);
+                return (int) (ret * mult);
+        }
+
+        if(ExceptionCardList.exceptionList.containsKey(card.cardID)) {
+            int ret = ExceptionCardList.exceptionList.get(card.cardID);
+            if(ret != -1) {
+                return (int) (ret * mult);
+            }
+        }
+
+        return Math.round(getCardEMCRarity(card.rarity) * mult);
     }
 
     public static int getRelicEMC(AbstractRelic relic) {

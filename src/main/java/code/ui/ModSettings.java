@@ -36,12 +36,16 @@ public class ModSettings {
     private final static String TO_ITEM_MULT_KEY = "toItemMult";
     public static float TO_ITEM_MULT = 1.0f;
 
+    private final static String TREAT_BASIC_AS_CURSE_KEY = "treatBasicAsCurse";
+    public static boolean TREAT_BASIC_AS_CURSE = false;
+
     public static void loadSettings() {
         theDefaultDefaultSettings.setProperty(CURSE_REMOVE_MULT_KEY, String.valueOf(-1.0f));
         theDefaultDefaultSettings.setProperty(CURSE_OBTAIN_DISC_RATE_KEY, String.valueOf(0.25f));
         theDefaultDefaultSettings.setProperty(ENABLE_EXPLOIT_PREVENTION_KEY, "TRUE");
         theDefaultDefaultSettings.setProperty(TO_EMC_MULT_KEY, String.valueOf(1.0f));
         theDefaultDefaultSettings.setProperty(TO_ITEM_MULT_KEY, String.valueOf(1.0f));
+        theDefaultDefaultSettings.setProperty(TREAT_BASIC_AS_CURSE_KEY, "FALSE");
 
         try{
             config = new SpireConfig("projectEMod", "projecteConfig", theDefaultDefaultSettings);
@@ -52,6 +56,7 @@ public class ModSettings {
             ENABLE_EXPLOIT_PREVENTION = config.getBool(ENABLE_EXPLOIT_PREVENTION_KEY);
             TO_EMC_MULT = config.getFloat(TO_EMC_MULT_KEY);
             TO_ITEM_MULT = config.getFloat(TO_ITEM_MULT_KEY);
+            TREAT_BASIC_AS_CURSE = config.getBool(TREAT_BASIC_AS_CURSE_KEY);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,6 +161,25 @@ public class ModSettings {
         });
         settingsPanel.addUIElement(itemMt);
         settingXPos = startingXPos;
+        settingYPos -= lineSpacing;
+
+        ModLabeledToggleButton basicCardButton = new ModLabeledToggleButton(SettingText[6],SettingText[7],
+                settingXPos, settingYPos, Settings.CREAM_COLOR, FontHelper.charDescFont, // Position (trial and error it), color, font
+                TREAT_BASIC_AS_CURSE, // Boolean it uses
+                settingsPanel, (label) -> {},
+                (button) -> { // The actual button:
+                    TREAT_BASIC_AS_CURSE = button.enabled; // The boolean true/false will be whether the button is enabled or not
+                    try {
+                        // And based on that boolean, set the settings and save them
+                        config.setBool(TREAT_BASIC_AS_CURSE_KEY, TREAT_BASIC_AS_CURSE);
+                        config.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        settingsPanel.addUIElement(basicCardButton); // Add the button to the settings panel. Button is a go.
+
         settingYPos -= lineSpacing;
 
         BaseMod.registerModBadge(badgeTexture, "ProjectE", "Jasonwqq", "A minecraft projecte experience", settingsPanel);

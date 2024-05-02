@@ -24,7 +24,9 @@
       "Curse Removal Multiplier",
       "Curse Obtain EMC Discount",
       "Conversion To EMC Multiplier",
-      "Conversion To Item Multiplier"
+      "Conversion To Item Multiplier",
+      "Treat Basic cards like Curse cards",
+      "Basic cards will cost EMC to remove and gain EMC when added"
     ]
   }
 }

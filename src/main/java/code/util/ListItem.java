@@ -146,7 +146,9 @@ public class ListItem<T> {
                 }
             } else {
                 if (item instanceof AbstractCard) {
-                    if (((AbstractCard) item).type == AbstractCard.CardType.CURSE || ((AbstractCard) item).type == AbstractCard.CardType.STATUS)
+                    if (((AbstractCard) item).type == AbstractCard.CardType.CURSE
+                            || ((AbstractCard) item).type == AbstractCard.CardType.STATUS
+                            || ModSettings.TREAT_BASIC_AS_CURSE && ((AbstractCard) item).rarity == AbstractCard.CardRarity.BASIC)
                         mult *= ModSettings.CURSE_OBTAIN_DISCOUNT_RATE;
                 }
             }
