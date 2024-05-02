@@ -55,7 +55,6 @@ public class ProjectEMod implements
         screenRelics.add(DollysMirror.ID);
     }
 
-    public static boolean isScreenUp = false;
 
     public static ExceptionSaver exceptionSaver;
 
@@ -163,6 +162,7 @@ public class ProjectEMod implements
 
         ModSettings.initModPanel();
 
+        BaseMod.addCustomScreen(TransmutationTable.exchangeScreen);
 //        try {
 //            ExceptionSaver.printOutAllEMCs();
 //        } catch (IOException e) {
@@ -172,14 +172,12 @@ public class ProjectEMod implements
 
     @Override
     public void receivePostRender(SpriteBatch sb) {
-        if(AbstractDungeon.isPlayerInDungeon())
-            TransmutationTable.renderScreen(sb);
+
     }
 
     @Override
     public void receivePostUpdate() {
-        if(AbstractDungeon.isPlayerInDungeon())
-            TransmutationTable.updateScreen();
+
     }
 
     public static void modifyPlayerRelics() {

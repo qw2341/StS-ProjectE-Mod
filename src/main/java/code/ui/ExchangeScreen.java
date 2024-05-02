@@ -2,11 +2,13 @@ package code.ui;
 
 
 import basemod.ReflectionHacks;
+import basemod.abstracts.CustomScreen;
 import code.ProjectEMod;
 import code.util.ListItem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.Loader;
+import com.evacipated.cardcrawl.modthespire.lib.SpireEnum;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -30,7 +32,7 @@ import loadout.screens.AbstractSelectScreen;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class ExchangeScreen implements HeaderButtonPlusListener{
+public class ExchangeScreen extends CustomScreen implements HeaderButtonPlusListener{
 
     public static boolean show = false;
     private static final UIStrings gUiStrings = CardCrawlGame.languagePack.getUIString("GridCardSelectScreen");
@@ -83,46 +85,60 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         this.tabKey = new InputAction(Input.Keys.TAB);
     }
 
-    public boolean isTabbing() {
-        return this.tabKey.isPressed();
+    public static class Enum
+    {
+        @SpireEnum
+        public static AbstractDungeon.CurrentScreen EXCHANGE_SCREEN;
     }
 
-    public void open() {
+    @Override
+    public AbstractDungeon.CurrentScreen curScreen()
+    {
+        return Enum.EXCHANGE_SCREEN;
+    }
+
+    @Override
+    public void reopen() {
 
         if(cardPanel == null)
             cardPanel = new AbstractScreenPanel<AbstractCard>(
-                ()->TransmutationTable.getList(AbstractDungeon.player.masterDeck.group, true),
-                ()->TransmutationTable.getList(TransmutationTable.savedCards, false),
+                    ()->TransmutationTable.getList(AbstractDungeon.player.masterDeck.group, true),
+                    ()->TransmutationTable.getList(TransmutationTable.savedCards, false),
                     AbstractCard.RAW_W * Settings.scale, AbstractCard.RAW_H * Settings.scale, -50f);
         if(relicPanel == null)
             relicPanel = new AbstractScreenPanel<AbstractRelic>(
-                ()->TransmutationTable.getList(AbstractDungeon.player.relics, true),
-                ()->TransmutationTable.getList(TransmutationTable.savedRelics, false),
+                    ()->TransmutationTable.getList(AbstractDungeon.player.relics, true),
+                    ()->TransmutationTable.getList(TransmutationTable.savedRelics, false),
                     AbstractRelic.RAW_W * Settings.scale, AbstractRelic.RAW_W * Settings.scale, 0f);
         if(potionPanel == null)
             potionPanel = new AbstractScreenPanel<AbstractPotion>(
-                ()->TransmutationTable.getList((ArrayList<AbstractPotion>) AbstractDungeon.player.potions.stream().filter(p -> !p.ID.equals(PotionSlot.POTION_ID)).collect(Collectors.toCollection(ArrayList::new)), true),
-                ()->TransmutationTable.getList(TransmutationTable.savedPotions, false),
+                    ()->TransmutationTable.getList((ArrayList<AbstractPotion>) AbstractDungeon.player.potions.stream().filter(p -> !p.ID.equals(PotionSlot.POTION_ID)).collect(Collectors.toCollection(ArrayList::new)), true),
+                    ()->TransmutationTable.getList(TransmutationTable.savedPotions, false),
                     64f * Settings.scale, 64f * Settings.scale, 25f);
 
         currentPanel = cardPanel;
 
-        if(AbstractDungeon.isScreenUp) {
-            AbstractDungeon.previousScreen = AbstractDungeon.screen;
-            AbstractDungeon.dynamicBanner.hide();
-            AbstractDungeon.overlayMenu.cancelButton.hide();
-            AbstractDungeon.overlayMenu.proceedButton.hide();
-            //AbstractDungeon.closeCurrentScreen();
-            if(Loader.isModLoaded("loadout")) {
-                AllInOneBag.INSTANCE.closeAllScreens();
 
-                LoadoutMod.isScreenUp = false;
-            }
-            ProjectEMod.isScreenUp = false;
-            AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NO_INTERACT;
-        }
-
+        AbstractDungeon.screen = curScreen();
         AbstractDungeon.isScreenUp = true;
+
+
+//        if(AbstractDungeon.isScreenUp) {
+//            AbstractDungeon.previousScreen = AbstractDungeon.screen;
+//            AbstractDungeon.dynamicBanner.hide();
+//            AbstractDungeon.overlayMenu.cancelButton.hide();
+//            AbstractDungeon.overlayMenu.proceedButton.hide();
+        //AbstractDungeon.closeCurrentScreen();
+        if(Loader.isModLoaded("loadout")) {
+            AllInOneBag.INSTANCE.closeAllScreens();
+
+            LoadoutMod.isScreenUp = false;
+        }
+//            ProjectEMod.isScreenUp = false;
+//            AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NO_INTERACT;
+//        }
+
+//        AbstractDungeon.isScreenUp = true;
         AbstractDungeon.overlayMenu.showBlackScreen(0.5f);
         //ProjectEMod.isScreenUp = true;
 
@@ -136,19 +152,32 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         currentPanel.open();
     }
 
+    public boolean isTabbing() {
+        return this.tabKey.isPressed();
+    }
+
+    public void open() {
+
+
+
+        if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.NONE)
+            AbstractDungeon.previousScreen = AbstractDungeon.screen;
+        // Call reopen in this example because the basics of
+        // setting the current screen are the same across both
+        reopen();
+
+    }
+
     public void close()
     {
         currentPanel.close();
 
-        AbstractDungeon.screen = AbstractDungeon.CurrentScreen.FTUE;
         confirmButton.isDisabled = true;
         confirmButton.hide();
-        AbstractDungeon.overlayMenu.cancelButton.hide();
-        AbstractDungeon.closeCurrentScreen();
 
         show = false;
-        ProjectEMod.isScreenUp = false;
 
+        genericScreenOverlayReset();
         if(Loader.isModLoaded("loadout")) {
             AllInOneBag.INSTANCE.showButton();
         }
@@ -175,8 +204,6 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
     }
 
     public void update() {
-        if(ProjectEMod.isScreenUp) hide();
-        if(!show) return;
 
         if(textPopup != null && textPopup.shown) {
             textPopup.update();
@@ -185,12 +212,8 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
 
 
         if (InputHelper.pressedEscape) {
-            close();
+            AbstractDungeon.closeCurrentScreen();
             InputHelper.pressedEscape = false;
-            return;
-        }
-        if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.SETTINGS) {
-            close();
             return;
         }
 
@@ -200,13 +223,12 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
         if (confirmButton.hb.clicked) {
             CInputActionSet.select.unpress();
             confirmButton.hb.clicked = false;
-            close();
+            AbstractDungeon.closeCurrentScreen();
         }
         for (HeaderButtonPlus b : this.buttons) b.update();
         if (this.confirmButton.hb.hovered) return;
         currentPanel.update();
 
-        //if(!show) close();
     }
 
 
@@ -231,6 +253,21 @@ public class ExchangeScreen implements HeaderButtonPlusListener{
                 currentPanel.open();
             }
         }
+    }
+
+    @Override
+    public boolean allowOpenMap() {
+        return true;
+    }
+
+    @Override
+    public void openingSettings() {
+
+    }
+
+    @Override
+    public void openingMap() {
+        AbstractDungeon.previousScreen = curScreen();
     }
 }
 

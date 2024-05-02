@@ -1,5 +1,6 @@
 package code.ui;
 
+import basemod.BaseMod;
 import basemod.TopPanelItem;
 import basemod.abstracts.CustomSavable;
 import basemod.patches.com.megacrit.cardcrawl.helpers.PotionLibrary.PotionHelperGetPotions;
@@ -67,8 +68,8 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
 
     @Override
     protected void onClick() {
-        if (!ExchangeScreen.show) exchangeScreen.open();
-        else exchangeScreen.close();
+        if (AbstractDungeon.screen != exchangeScreen.curScreen()) BaseMod.openCustomScreen(exchangeScreen.curScreen());
+        else AbstractDungeon.closeCurrentScreen();
     }
 
     @Override
@@ -80,14 +81,14 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
     @Override
     public void update() {
         super.update();
-        if(ExchangeScreen.show) exchangeScreen.update();
+//        if(ExchangeScreen.show) exchangeScreen.update();
     }
 
     @Override
     public void render(SpriteBatch sb) {
         super.render(sb);
         this.renderEMC(sb);
-        if(ExchangeScreen.show) exchangeScreen.render(sb);
+//        if(ExchangeScreen.show) exchangeScreen.render(sb);
     }
 
     public void renderEMC(SpriteBatch sb){
@@ -95,17 +96,6 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
         //FontHelper.renderFontLeft(sb, FontHelper.topPanelInfoFont, "EMC: " + PLAYER_EMC, this.x - 64.0f - FontHelper.getWidth(FontHelper.topPanelInfoFont,"EMC: " + PLAYER_EMC, Settings.scale), this.y + this.hb_h / 2f, Settings.CREAM_COLOR);
     }
 
-    public static void renderScreen(SpriteBatch sb) {
-//        if(ExchangeScreen.show) {
-//            exchangeScreen.render(sb);
-//        }
-    }
-
-    public static void updateScreen() {
-//        if(ExchangeScreen.show) {
-//            exchangeScreen.update();
-//        }
-    }
 
     private static int getCardEMCRarity(AbstractCard.CardRarity rarity) {
         switch (rarity) {
