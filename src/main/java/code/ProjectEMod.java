@@ -6,6 +6,7 @@ import basemod.devcommands.ConsoleCommand;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
 import code.commands.EMCCommand;
+import code.ui.ExchangeScreen;
 import code.ui.ModSettings;
 import code.ui.TransmutationTable;
 import code.util.ExceptionSaver;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.relics.*;
@@ -36,7 +38,7 @@ import java.util.stream.IntStream;
 public class ProjectEMod implements
         EditRelicsSubscriber,
         EditStringsSubscriber,
-        AddAudioSubscriber, PostInitializeSubscriber, PostRenderSubscriber, PostUpdateSubscriber, PostDungeonInitializeSubscriber {
+        AddAudioSubscriber, PostInitializeSubscriber, PostRenderSubscriber, PreUpdateSubscriber, PostDungeonInitializeSubscriber {
 
     public static Logger logger = LogManager.getLogger(ProjectEMod.class.getName());
     public static HashSet<Integer> relicsToRemove = new HashSet<>();
@@ -176,8 +178,13 @@ public class ProjectEMod implements
     }
 
     @Override
-    public void receivePostUpdate() {
-
+    public void receivePreUpdate() {
+        if(AbstractDungeon.isScreenUp && AbstractDungeon.screen == ExchangeScreen.Enum.EXCHANGE_SCREEN) {
+            if (InputHelper.pressedEscape) {
+                AbstractDungeon.closeCurrentScreen();
+                InputHelper.pressedEscape = false;
+            }
+        }
     }
 
     public static void modifyPlayerRelics() {

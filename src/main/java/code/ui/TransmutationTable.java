@@ -13,6 +13,7 @@ import code.util.ListItem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.evacipated.cardcrawl.modthespire.Loader;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -21,6 +22,8 @@ import com.megacrit.cardcrawl.helpers.*;
 import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import loadout.LoadoutMod;
+import loadout.relics.AllInOneBag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +71,12 @@ public class TransmutationTable extends TopPanelItem implements CustomSavable<EM
 
     @Override
     protected void onClick() {
+        if(Loader.isModLoaded("loadout")) {
+            if(LoadoutMod.isScreenUp) {
+                AllInOneBag.INSTANCE.closeAllScreens();
+                LoadoutMod.isScreenUp = false;
+            }
+        }
         if (AbstractDungeon.screen != exchangeScreen.curScreen()) BaseMod.openCustomScreen(exchangeScreen.curScreen());
         else AbstractDungeon.closeCurrentScreen();
     }

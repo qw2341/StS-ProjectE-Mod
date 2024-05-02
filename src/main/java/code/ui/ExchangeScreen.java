@@ -123,24 +123,7 @@ public class ExchangeScreen extends CustomScreen implements HeaderButtonPlusList
         AbstractDungeon.isScreenUp = true;
 
 
-//        if(AbstractDungeon.isScreenUp) {
-//            AbstractDungeon.previousScreen = AbstractDungeon.screen;
-//            AbstractDungeon.dynamicBanner.hide();
-//            AbstractDungeon.overlayMenu.cancelButton.hide();
-//            AbstractDungeon.overlayMenu.proceedButton.hide();
-        //AbstractDungeon.closeCurrentScreen();
-        if(Loader.isModLoaded("loadout")) {
-            AllInOneBag.INSTANCE.closeAllScreens();
-
-            LoadoutMod.isScreenUp = false;
-        }
-//            ProjectEMod.isScreenUp = false;
-//            AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NO_INTERACT;
-//        }
-
-//        AbstractDungeon.isScreenUp = true;
         AbstractDungeon.overlayMenu.showBlackScreen(0.5f);
-        //ProjectEMod.isScreenUp = true;
 
         if(Loader.isModLoaded("loadout")) AbstractSelectScreen.hideLoadoutRelics();
 
@@ -211,11 +194,6 @@ public class ExchangeScreen extends CustomScreen implements HeaderButtonPlusList
         }
 
 
-        if (InputHelper.pressedEscape) {
-            AbstractDungeon.closeCurrentScreen();
-            InputHelper.pressedEscape = false;
-            return;
-        }
 
 
         confirmButton.update();
@@ -262,7 +240,9 @@ public class ExchangeScreen extends CustomScreen implements HeaderButtonPlusList
 
     @Override
     public void openingSettings() {
-
+        if(Loader.isModLoaded("loadout")) {
+            AllInOneBag.INSTANCE.showButton();
+        }
     }
 
     @Override

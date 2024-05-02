@@ -168,8 +168,11 @@ public class ListItem<T> {
                 if(TransmutationTable.PLAYER_EMC < getEmc()) return;
             }
 
-            AbstractDungeon.player.masterDeck.removeCard(card);
-            card.onRemoveFromMasterDeck();
+            if(ModSettings.ENABLE_EXPLOIT_PREVENTION) {
+                AbstractDungeon.player.masterDeck.group.remove(card);
+            } else
+                AbstractDungeon.player.masterDeck.removeCard(card);
+
             if(!TransmutationTable.savedCardIDs.contains(card.cardID)) {
                 TransmutationTable.savedCardIDs.add(card.cardID);
                 TransmutationTable.savedCards.add(card.makeCopy());
