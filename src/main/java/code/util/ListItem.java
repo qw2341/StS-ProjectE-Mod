@@ -106,8 +106,8 @@ public class ListItem<T> {
             this.hb.update();
             ((AbstractRelic) item).update();
         } else if (item instanceof AbstractPotion) {
-            ((AbstractPotion) item).update();
             this.hb.update();
+            ((AbstractPotion) item).update();
         }
     }
 
